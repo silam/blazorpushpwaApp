@@ -1,0 +1,69 @@
+﻿@page "/serverpush"
+@inject IJSRuntime JSRuntime
+@inject HttpClient httpClient
+@using WebPush
+    
+<PageTitle>Counter</PageTitle>
+
+<h1>Server Push</h1>
+
+
+
+<p role="status">Subscription: @Auth</p>
+
+
+<button class="btn btn-primary" @onclick="ServerPushMsg">Server Push</button>
+
+@code {
+    private int currentCount = 0;
+    private string Auth;
+
+    public NotificationSubscription subscription = new NotificationSubscription();
+
+
+    protected override void OnInitialized()
+    {
+
+    }
+       
+
+    private void ServerPushMsg()
+    {
+        // In the background, send push notifications if possible
+        if (subscription != null)
+        {
+            _ = TrackAndSendNotificationsAsync("Meet me at 7:00 PM", subscription);
+
+        }
+
+    }
+
+    private static async Task TrackAndSendNotificationsAsync(string detail, NotificationSubscription subscription)
+    {
+        await SendNotificationAsync(detail, subscription, "Meet me tonight");
+    }
+
+    private static async Task SendNotificationAsync(string detail, NotificationSubscription subscription, string title)
+    {
+        // For a real application, generate your own
+        var publicKey = "BOGXFWsq7wkMCG1xQ8O6bGmIM8555D7K0KHnedcC63lqUKjCg9sieOGNYLwzH1C1aLHK264ufKpJ90yKOb0ACIY";
+        var privateKey = "aueoLqq2dqQE2wOHVq_afUl387Lq0yZ_NcGArAcRHKU";
+
+        var pushSubscription = new PushSubscription(subscription.Url, subscription.P256dh, subscription.Auth);
+        var vapidDetails = new VapidDetails("mailto:<silam@hotmail.com>", publicKey, privateKey);
+        var webPushClient = new WebPushClient();
+        try
+        {
+            var payload = JsonSerializer.Serialize(new
+            {
+                title,
+                url = $"meetup/{detail}",
+            });
+            await webPushClient.SendNotificationAsync(pushSubscription, payload, vapidDetails);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("Error sending push notification: " + ex.Message);
+        }
+    }
+}
