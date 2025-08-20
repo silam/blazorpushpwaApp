@@ -25,8 +25,8 @@ namespace BlazorPWA.Server.Controllers
         public async Task<int> Get()
         {
             //Replace with your generated public/private key
-            var publicKey = "BPodXwNKsIZ5HyRyFm6Xx4WmSeoq8zZJnjakgJUgaXbz1lvKnTfYBS5rqBpcFUnlm-1tTSE-122i5qjb4Br6Z7o";
-            var privateKey = "aXH4Dc9rB_1fF0iLKRNXdQUIOsALMkrlZgjBQg8tO2U";
+            var publicKey = "";
+            var privateKey = "";
 
             //give a website URL or mailto:your-mail-id
             var vapidDetails = new VapidDetails("mailto:silam@hotmail.com", publicKey, privateKey);
