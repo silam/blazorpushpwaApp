@@ -46,8 +46,8 @@
     private static async Task SendNotificationAsync(string detail, NotificationSubscription subscription, string title)
     {
         // For a real application, generate your own
-        var publicKey = "BOGXFWsq7wkMCG1xQ8O6bGmIM8555D7K0KHnedcC63lqUKjCg9sieOGNYLwzH1C1aLHK264ufKpJ90yKOb0ACIY";
-        var privateKey = "aueoLqq2dqQE2wOHVq_afUl387Lq0yZ_NcGArAcRHKU";
+        var publicKey = "";
+        var privateKey = 
 
         var pushSubscription = new PushSubscription(subscription.Url, subscription.P256dh, subscription.Auth);
         var vapidDetails = new VapidDetails("mailto:<silam@hotmail.com>", publicKey, privateKey);
